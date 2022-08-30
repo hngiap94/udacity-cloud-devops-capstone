@@ -6,19 +6,19 @@ Resources:
     Properties:
       RepositoryName: udacity-cloud-devops-capstone-project-repo
       RepositoryPolicyText: 
-      Version: "2012-10-17"
-      Statement:
-        - 
-          Sid: AllowPushPull
-          Effect: Allow
-          Principal:
-            AWS:
-              - "arn:aws:iam::439680997109:user/cli-user"
-          Action: 
-            - "ecr:GetDownloadUrlForLayer"
-            - "ecr:BatchGetImage"
-            - "ecr:BatchCheckLayerAvailability"
-            - "ecr:PutImage"
-            - "ecr:InitiateLayerUpload"
-            - "ecr:UploadLayerPart"
-            - "ecr:CompleteLayerUpload"
+        Version: "2012-10-17"
+        Statement:
+          - 
+            Sid: AllowPushPull
+            Effect: Allow
+            Principal:
+              AWS:
+                - "arn:aws:iam::439680997109:user/cli-user"
+            Action: 
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:PutImage"
+              - "ecr:InitiateLayerUpload"
+              - "ecr:UploadLayerPart"
+              - "ecr:CompleteLayerUpload"
