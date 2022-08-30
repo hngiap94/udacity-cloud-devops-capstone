@@ -6,9 +6,8 @@ install:
 	pip install -r requirements.txt
 
 install-hadolint:
-	wget -O ./hadolint https://github.com/hadolint/hadolint/releases/download/v2.10.0/hadolint-Linux-x86_64
-	chmod +x ./hadolint
-	sudo mv ./hadolint /usr/local/bin/hadolint
+	wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.10.0/hadolint-Linux-x86_64
+	chmod +x /bin/hadolint
 
 lint:
 	hadolint Dockerfile
