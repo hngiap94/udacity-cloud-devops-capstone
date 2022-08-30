@@ -1,1 +1,1 @@
-aws cloudformation create-stack --stack-name $1 --template-body file://$2 --parameter file://$3 --region=us-east-1
+aws cloudformation create-stack --stack-name udacity-cloud-devops-capstone-project-ecr --template-body file://ecr.yml --region=us-east-1

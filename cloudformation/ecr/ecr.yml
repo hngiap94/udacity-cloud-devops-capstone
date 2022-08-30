@@ -1,15 +1,10 @@
 Description: Create an ECR repository to store docker images
 
-Parameters:
-  repoName:
-    Description: Name for ECR repo
-    Type: String
-
 Resources:
   ECRRepo:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: !Sub ${repoName}-repo
+      RepositoryName: udacity-cloud-devops-capstone-project-repo
       RepositoryPolicyText: 
       Version: "2012-10-17"
       Statement:
