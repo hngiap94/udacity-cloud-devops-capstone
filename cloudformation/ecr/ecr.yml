@@ -1,0 +1,29 @@
+Description: Create an ECR repository to store docker images
+
+Parameters:
+  repoName:
+    Description: Name for ECR repo
+    Type: String
+
+Resources:
+  ECRRepo:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub ${repoName}-repo
+      RepositoryPolicyText: 
+      Version: "2012-10-17"
+      Statement:
+        - 
+          Sid: AllowPushPull
+          Effect: Allow
+          Principal:
+            AWS:
+              - "arn:aws:iam::439680997109:user/cli-user"
+          Action: 
+            - "ecr:GetDownloadUrlForLayer"
+            - "ecr:BatchGetImage"
+            - "ecr:BatchCheckLayerAvailability"
+            - "ecr:PutImage"
+            - "ecr:InitiateLayerUpload"
+            - "ecr:UploadLayerPart"
+            - "ecr:CompleteLayerUpload"
