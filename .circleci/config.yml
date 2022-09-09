@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  aws-ecr: circleci/aws-ecr@8.1.2
+
 jobs:
   lint-code:
     docker:
@@ -32,3 +35,11 @@ workflows:
   default:
     jobs:
       - lint-code
+      - aws-ecr/build_and_push_image:
+          requires:
+            - lint-code
+          # aws-access-key-id: "${AWS_ACCESS_KEY_ID}"
+          # aws-secret-access-key: "${AWS_SECRET_ACCESS_KEY}"
+          # region: "${AWS_REGION}"
+          path: .
+          repo: 'udacity-cloud-devops-capstone-project-repo'
