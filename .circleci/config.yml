@@ -39,11 +39,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create deployment manifest
+          name: Create deployment template
           command: |
-            sed -i "s/__IMAGE_TAG__/${CIRCLE_SHA1:0:7}/g" deployment/deployment.template
-            cat deployment/deployment.template
-
+            sed -i "s/__IMAGE_TAG__/${CIRCLE_SHA1:0:7}/g" deployment/deployment.yaml
+            cat deployment/deployment.yaml
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: GiapHN-Capstone-Project-eks-cluster
+          install-kubectl: true
+      - kubernetes/create-or-update-resource:
+          resource-file-path: deployment/deployment.yaml
+          show-kubectl-command: true
 workflows:
   default:
     jobs:
