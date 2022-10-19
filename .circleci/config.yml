@@ -44,14 +44,12 @@ jobs:
             sed -i "s/__IMAGE_TAG__/${CIRCLE_SHA1:0:7}/g" deployment/deployment.yaml
             cat deployment/deployment.yaml
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: GiapHN-Capstone-Project-eks-cluster
+          cluster-name: ${EKS_CLUSTER_NAME}
+          aws-region: ${AWS_REGION} 
           install-kubectl: true
       - kubernetes/create-or-update-resource:
           resource-file-path: deployment/deployment.yaml
           show-kubectl-command: true
-      - run:
-          command: echo "EKS_CLUSTER_NAME is ${EKS_CLUSTER_NAME} and AWS_REGION is ${AWS_REGION} and AWS_DEFAULT_REGION is ${AWS_DEFAULT_REGION}"
-          when: on_fail
 workflows:
   default:
     jobs:
