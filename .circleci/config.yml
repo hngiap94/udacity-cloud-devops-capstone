@@ -41,8 +41,8 @@ jobs:
       - run:
           name: Create deployment manifest
           command: |
+            sed -i 's~__IMAGE_TAG__~${CIRCLE_SHA1:0:7}~g' deployment/deployment.template
             cat deployment/deployment.template
-            # sed -i 's~__IMAGE_TAG__~${CIRCLE_SHA1:0:7}~g' deployment/deployment.template
 
 workflows:
   default:
