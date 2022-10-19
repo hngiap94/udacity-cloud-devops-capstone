@@ -56,4 +56,5 @@ workflows:
           repo: 'udacity-cloud-devops-capstone-project-repo'
           tag: ${CIRCLE_SHA1:0:7}
       - deploy-app:
-          requires: build-and-push-image
+          requires:
+            - build-and-push-image
