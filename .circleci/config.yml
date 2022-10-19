@@ -49,6 +49,9 @@ jobs:
       - kubernetes/create-or-update-resource:
           resource-file-path: deployment/deployment.yaml
           show-kubectl-command: true
+      - run:
+          command: echo "EKS_CLUSTER_NAME is ${EKS_CLUSTER_NAME} and AWS_REGION is ${AWS_REGION} and AWS_DEFAULT_REGION is ${AWS_DEFAULT_REGION}"
+          when: on_fail
 workflows:
   default:
     jobs:
