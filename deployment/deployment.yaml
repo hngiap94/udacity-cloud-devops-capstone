@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: 439680997109.dkr.ecr.us-east-1.amazonaws.com/udacity-cloud-devops-capstone-project-repo/__IMAGE_TAG__
+        image: 439680997109.dkr.ecr.us-east-1.amazonaws.com/udacity-cloud-devops-capstone-project-repo:__IMAGE_TAG__
         ports:
           - name: app
             containerPort: 80
