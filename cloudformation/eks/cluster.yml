@@ -1,0 +1,86 @@
+Description: Create an EKS cluster
+
+Parameters:
+  ProjectName:
+    Description: Project's name
+    Type: String
+
+Resources:
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Security Group for EKS Cluster
+      VpcId:
+        Fn::ImportValue: !Sub ${ProjectName}-VPCID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags: 
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Name
+          Value: !Sub ${ProjectName}-SG
+
+  EKSCluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: !Sub ${ProjectName}-eks-cluster
+      Version: "1.22"
+      RoleArn: !GetAtt EKSClusterRole.Arn
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          - !Ref SecurityGroup
+        SubnetIds:
+          - Fn::ImportValue: !Sub ${ProjectName}-PUB1-SN
+          - Fn::ImportValue: !Sub ${ProjectName}-PUB2-SN
+
+  EKSClusterRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${ProjectName}-eks-cluster-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - eks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+        - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
+
+  NodeGroup:
+    Type: AWS::EKS::Nodegroup
+    DependsOn: EKSCluster
+    Properties:
+      NodegroupName: !Sub ${ProjectName}-eks-nodegroup
+      ClusterName: !Sub ${ProjectName}-eks-cluster
+      NodeRole: !GetAtt EKSNodeGroupRole.Arn
+      ScalingConfig:
+        DesiredSize: 1
+        MaxSize: 3
+        MinSize: 1
+      Subnets:
+        - Fn::ImportValue: !Sub ${ProjectName}-PUB1-SN
+        - Fn::ImportValue: !Sub ${ProjectName}-PUB2-SN
+
+  EKSNodeGroupRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          Effect: Allow
+          Principal:
+            Service:
+              - ec2.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly

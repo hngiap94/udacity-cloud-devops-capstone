@@ -1,1 +1,0 @@
-aws cloudformation delete-stack --stack-name udacity-cloud-devops-capstone-project-ecr

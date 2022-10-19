@@ -1,7 +1,9 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@8.1.2
+  aws-ecr: circleci/aws-ecr@8.1.3
+  aws-eks: circleci/aws-eks@2.2.0
+  kubernetes: circleci/kubernetes@1.3.1
 
 jobs:
   lint-code:
@@ -31,6 +33,10 @@ jobs:
             . venv/bin/activate
             make lint
 
+  # deploy-app:
+  #   docker:
+  #     - image: 'cimg/base:stable'
+  #   steps:
 
 workflows:
   default:
@@ -39,8 +45,9 @@ workflows:
       - aws-ecr/build-and-push-image:
           requires:
             - lint-code
-          # aws-access-key-id: "${AWS_ACCESS_KEY_ID}"
-          # aws-secret-access-key: "${AWS_SECRET_ACCESS_KEY}"
-          # region: "${AWS_REGION}"
+          name: build-and-push-image
           path: .
           repo: 'udacity-cloud-devops-capstone-project-repo'
+          tag: ${CIRCLE_SHA1:0:7}
+      # - deploy-app:
+      #     requires: build-and-push-image

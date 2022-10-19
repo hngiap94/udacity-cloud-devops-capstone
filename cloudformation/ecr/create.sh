@@ -1,1 +1,0 @@
-aws cloudformation create-stack --stack-name udacity-cloud-devops-capstone-project-ecr --template-body file://ecr.yml --region=us-east-1
