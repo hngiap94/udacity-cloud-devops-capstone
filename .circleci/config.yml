@@ -33,10 +33,16 @@ jobs:
             . venv/bin/activate
             make lint
 
-  # deploy-app:
-  #   docker:
-  #     - image: 'cimg/base:stable'
-  #   steps:
+  deploy-app:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: Create deployment manifest
+          command: |
+            cat deployment/deployment.template
+            # sed -i 's~__IMAGE_TAG__~${CIRCLE_SHA1:0:7}~g' deployment/deployment.template
 
 workflows:
   default:
@@ -49,5 +55,5 @@ workflows:
           path: .
           repo: 'udacity-cloud-devops-capstone-project-repo'
           tag: ${CIRCLE_SHA1:0:7}
-      # - deploy-app:
-      #     requires: build-and-push-image
+      - deploy-app:
+          requires: build-and-push-image

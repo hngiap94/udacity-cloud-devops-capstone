@@ -1,33 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: project5-deployment
+  name: project-capstone-deployment
   labels:
-    app: project5-service
+    app: project-capstone-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: project5-service
+      app: project-capstone-app
   template:
     metadata:
       labels:
-        app: project5-service
+        app: project-capstone-app
     spec:
       containers:
-      - name: web
-        image: 374000545310.dkr.ecr.us-east-1.amazonaws.com/project5:latest
+      - name: app
+        image: 439680997109.dkr.ecr.us-east-1.amazonaws.com/udacity-cloud-devops-capstone-project-repo/__IMAGE_TAG__
         ports:
-          - name: web
+          - name: app
             containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: service loadbalance
+  name: project-capstone-service
 spec:
   selector:
-    app: project5-service
+    app: project-capstone-app
   type: LoadBalancer
   ports:
     - protocol: TCP
